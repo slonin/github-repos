@@ -23,15 +23,16 @@ async function getRepos(e) {
   clear();
   let inputValue = e.target.value;
   if (inputValue) {
-    const response = await fetch(`https://api.github.com/search/repositories?q=${inputValue}&per_page=5&sort=stars`)
+    const response = await fetch(`https://api.github.com/search/repositories?q=${inputValue}in:name&per_page=5&sort=stars`)
     repositories = (await response.json()).items;
     createAutocomplete(repositories);
   }
 }
 
 function createAutocomplete(repositories) {
+  console.log(repositories)
   const fragment = document.createDocumentFragment();
-  for (let {name, id} of repositories) {
+  for (let { name, id } of repositories) {
     const item = document.createElement('li');
     const itemLink = document.createElement('a');
     itemLink.textContent = name;
