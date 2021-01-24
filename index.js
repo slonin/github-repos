@@ -17,20 +17,23 @@ const debounce = (fn, debounceTime) => {
 };
 
 let repositories;
-const debouncedGetRepos = debounce(getRepos, 1000);
+const debouncedGetRepos = debounce(getRepos, 200);
 
 async function getRepos(e) {
   clear();
   let inputValue = e.target.value;
-  if (inputValue) {
-    const response = await fetch(`https://api.github.com/search/repositories?q=${inputValue}in:name&per_page=5&sort=stars`)
-    repositories = (await response.json()).items;
-    createAutocomplete(repositories);
+
+  if(inputValue.trim() === '') {
+    return;
   }
+
+  const response = await fetch(`https://api.github.com/search/repositories?q=${inputValue}in:name&per_page=5&sort=stars`)
+  repositories = (await response.json()).items;
+  createAutocomplete(repositories);
+
 }
 
 function createAutocomplete(repositories) {
-  console.log(repositories)
   const fragment = document.createDocumentFragment();
   for (let { name, id } of repositories) {
     const item = document.createElement('li');
@@ -70,7 +73,7 @@ function createReposList(targetId) {
   const buttonDelete = document.createElement('button');
   buttonDelete.classList.add('button-delete');
   item.append(buttonDelete);
-  reposList.append(item);
+  reposList.prepend(item);
 }
 
 input.addEventListener('input', debouncedGetRepos);
