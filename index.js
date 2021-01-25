@@ -44,7 +44,7 @@ function createAutocomplete(repositories) {
     item.append(itemLink);
     fragment.append(item);
   }
-
+  clear();
   autocomplete.append(fragment);
 }
 
@@ -73,7 +73,7 @@ function createReposList(targetId) {
   const buttonDelete = document.createElement('button');
   buttonDelete.classList.add('button-delete');
   item.append(buttonDelete);
-  reposList.prepend(item);
+  reposList.append(item);
 }
 
 input.addEventListener('input', debouncedGetRepos);
